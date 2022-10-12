@@ -10,6 +10,7 @@ export const expense = gql`
     }
 
     input ExpenseInput {
+        expenseId: ID
         name: String!
         dueDate: String
         recurring: Boolean
