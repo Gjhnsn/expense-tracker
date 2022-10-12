@@ -1,20 +1,20 @@
 ---
-name: Feature
-about: Issue template for new feature requests
+name: Feature request
+about: Suggest an idea for this project
 title: ''
-labels: feature
-assignees: nbheemanathi thomascking khiavdim 
+labels: ''
+assignees: ''
 
 ---
 
-## Desired Feature
-A clear and concise description of what the feature is and what it does.
+**Is your feature request related to a problem? Please describe.**
+A clear and concise description of what the problem is. Ex. I'm always frustrated when [...]
 
-## Actual/Current Behavior
-A clear and concise description of what is currently happening.
+**Describe the solution you'd like**
+A clear and concise description of what you want to happen.
 
-## Steps to Implement
-Add a list of the steps required to implement this feature
+**Describe alternatives you've considered**
+A clear and concise description of any alternative solutions or features you've considered.
 
-## Additional context
+**Additional context**
 Add any other context or screenshots about the feature request here.
