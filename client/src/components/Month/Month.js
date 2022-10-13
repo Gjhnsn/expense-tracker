@@ -1,9 +1,14 @@
-import React from 'react'
+import React from "react";
+import { MonthTitle } from "./styles";
 
 const Month = () => {
-  return (
-    <div>Month</div>
-  )
-}
+  const currentMonth = new Date().toLocaleString("default", { month: "long" });
 
-export default Month
+  return (
+    <>
+      <MonthTitle>{currentMonth.toUpperCase()}</MonthTitle>
+    </>
+  );
+};
+
+export default Month;
