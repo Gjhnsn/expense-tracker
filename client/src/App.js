@@ -6,10 +6,8 @@ import Layout from "./components/Layout/Layout";
 function App() {
   return (
     <ThemeProvider theme={theme}>
-      <div className="App">
-        <GlobalStyles />
-        <Layout />
-      </div>
+      <GlobalStyles />
+      <Layout />
     </ThemeProvider>
   );
 }

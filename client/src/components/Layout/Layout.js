@@ -1,13 +1,13 @@
-import React from 'react'
-import { Text } from './styles'
+import React from "react";
+import Header from "../Header/Header";
+import { Text, Wrapper } from "./styles";
 
 const Layout = () => {
   return (
-    <>
-    <h1>Layout</h1>
-    <Text>Hello</Text>
-    </>
-  )
-}
+    <Wrapper>
+      <Header />
+    </Wrapper>
+  );
+};
 
-export default Layout
+export default Layout;
