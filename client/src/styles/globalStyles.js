@@ -14,4 +14,5 @@ export const GlobalStyles = createGlobalStyle`
 
 export const theme = {
   body: "#343434",
+  headerText: '#D9D9D9'
 };
