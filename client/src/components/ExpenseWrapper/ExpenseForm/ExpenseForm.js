@@ -1,8 +1,9 @@
 import React from 'react'
+import { Container } from './styles'
 
 const ExpenseForm = () => {
   return (
-    <div>ExpenseForm</div>
+    <Container>ExpenseForm</Container>
   )
 }
 
