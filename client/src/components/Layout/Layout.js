@@ -7,9 +7,11 @@ import { Text, Wrapper } from "./styles";
 const Layout = () => {
   return (
     <Wrapper>
-      <Header />
-      <Month />
-        <ExpenseWrapper />
+      <div>
+        <Header />
+        <Month />
+      </div>
+      <ExpenseWrapper />
     </Wrapper>
   );
 };
