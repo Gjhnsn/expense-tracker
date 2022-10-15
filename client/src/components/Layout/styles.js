@@ -7,4 +7,6 @@ export const Wrapper = styled.div`
     min-height: 100vh;
     margin: 0 auto;
     padding-bottom: 100px;
+    display: flex;
+    flex-direction: column;
 `

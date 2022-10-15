@@ -9,7 +9,7 @@ const Layout = () => {
     <Wrapper>
       <Header />
       <Month />
-      <ExpenseWrapper />
+        <ExpenseWrapper />
     </Wrapper>
   );
 };

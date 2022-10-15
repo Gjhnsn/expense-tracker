@@ -1,20 +1,36 @@
 import React from "react";
-import { Container, GridLayout } from "./styles";
+import { Container, Footer, GridLayout, Header, HeightContainer } from "./styles";
 
 const ExpenseList = () => {
   return (
     <Container>
-      <GridLayout style={{borderBottom: '1px solid black'}}>
+      <Header style={{ borderBottom: "1px solid black" }}>
         <h3>Name</h3>
         <h3>Due</h3>
         <h3>Amount</h3>
         <h3 style={{ justifySelf: "flex-end" }}>Action</h3>
-      </GridLayout>
+      </Header>
       <ul>
         <li>
-          <GridLayout>hello</GridLayout>
+          <GridLayout>
+            <p>rent</p>
+            <p>10/17</p>
+            <p>$1800</p>
+            <p></p>
+          </GridLayout>
+        </li>
+        <li>
+          <GridLayout>
+            <p>rent</p>
+            <p>10/17</p>
+            <p>$1800</p>
+            <p></p>
+          </GridLayout>
         </li>
       </ul>
+      <Footer>
+        <p>Total: $2,330</p>
+      </Footer>
     </Container>
   );
 };
