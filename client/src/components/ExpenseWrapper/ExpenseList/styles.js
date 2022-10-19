@@ -13,11 +13,9 @@ export const Container = styled.div`
   position: relative;
   display: flex;
   flex-direction: column;
-  border: green 1px solid;
 `;
 
 export const ScrollContainer = styled.div`
-  border: 1px solid yellow;
   height: 100%;
   overflow-y: scroll;
 `
