@@ -19,6 +19,8 @@ import {
 const ExpenseForm = ({ openExpenseForm, setOpenExpenseForm }) => {
   const [recurringPayment, setRecurringPayment] = useState(false);
   const [isSelected, setIsSelected] = useState(false);
+  const [expenseName, setExpenseName] = useState("");
+  const [dateChosen, setDateChosen] = useState("");
   const [expenseAmount, setExpenseAmount] = useState("");
 
   const options = [];
@@ -64,6 +66,18 @@ const ExpenseForm = ({ openExpenseForm, setOpenExpenseForm }) => {
   //     }
   // });
 
+  const handleDateChange = (date) => {
+    setDateChosen(date);
+  };
+
+  console.log(recurringPayment);
+
+  const closeAndClearForm = () => {
+    setOpenExpenseForm(false);
+    setExpenseName('');
+    setDateChosen('');
+    setExpenseAmount('');
+  }
 
   return (
     <>
@@ -75,11 +89,17 @@ const ExpenseForm = ({ openExpenseForm, setOpenExpenseForm }) => {
           <FormContainer>
             <FormHeader>
               <h3>Add New Expense</h3>
-              <BsXSquare onClick={() => setOpenExpenseForm(false)} />
+              <BsXSquare onClick={closeAndClearForm} />
             </FormHeader>
 
             <label>Name</label>
-            <input type="text" name="name" placeholder="Expense name..." />
+            <input
+              type="text"
+              name="name"
+              placeholder="Expense name..."
+              value={expenseName}
+              onChange={(e) => setExpenseName(e.target.value)}
+            />
 
             <label>Due Date</label>
 
@@ -89,6 +109,8 @@ const ExpenseForm = ({ openExpenseForm, setOpenExpenseForm }) => {
               maxMenuHeight={200}
               placeholder="Select date..."
               isClearable={true}
+              value={dateChosen}
+              onChange={handleDateChange}
             />
 
             <label>Amount</label>
@@ -101,6 +123,7 @@ const ExpenseForm = ({ openExpenseForm, setOpenExpenseForm }) => {
                 min="0.01"
                 placeholder="Expense total..."
                 onKeyPress={preventNegative}
+                value={expenseAmount}
                 onChange={(e) => setExpenseAmount(e.target.value)}
                 onInput={(e) => naturalRound(e)}
               />
