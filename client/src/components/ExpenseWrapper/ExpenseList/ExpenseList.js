@@ -13,14 +13,13 @@ import { AiOutlineEdit, AiOutlineDelete } from "react-icons/ai";
 
 const ExpenseList = () => {
   const { loading, data } = useQuery(GET_EXPENSES);
-  console.log(data?.getExpenses);
 
   // replace with spinner
   if (loading) return <p>Loading...</p>;
 
   const expenses = data?.getExpenses.map((expense) => {
     return (
-      <li>
+      <li key={expense.name}>
         <GridLayout>
           <div>
             <p>{expense.name}</p>
