@@ -1,6 +1,6 @@
 // expense form styles
 
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import { BiDollar } from "react-icons/bi";
 
 export const Container = styled.div`
@@ -31,6 +31,18 @@ export const FormHeader = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+
+  h3 {
+    margin-right: 15px;
+  }
+
+  p {
+    align-self: flex-end;
+    margin-right: auto;
+    color: ${(props) => props.theme.mutedColor};
+    font-size: 20px;
+    padding-bottom: 3px;
+  }
 `;
 
 export const DueDate = styled.div.attrs({
@@ -52,18 +64,11 @@ export const customSelectStyles = {
       backgroundColor: "#5B7861",
     },
   }),
-  clearIndicator: (provided) => ({
-    ...provided,
-    "&:hover": {
-      color: `#252525`,
-      cursor: 'pointer'
-    },
-  }),
   dropdownIndicator: (provided) => ({
     ...provided,
     "&:hover": {
       color: `#252525`,
-      cursor: 'pointer'
+      cursor: "pointer",
     },
   }),
   menuList: (provided) => ({
@@ -157,8 +162,18 @@ export const YesOption = styled.div`
   align-items: center;
   font-size: 20px;
   padding: 5px;
-  background-color: ${(props) =>
-    props.recurringPayment && props.isSelected && props.theme.body};
+  /* background-color: ${(props) =>
+    props.recurringPayment && props.isSelected && props.theme.body}; */
+  background-color: ${(props) => {
+    const newExpenseCond = props.recurringPayment && props.isSelected;
+    const editExpenseCond = props.isEdit && props.currentExpense.recurring;
+
+    if (props.recurringPayment === null) {
+      return;
+    } else if (props.recurringPayment) {
+      return props.theme.body;
+    }
+  }};
   cursor: pointer;
 `;
 
@@ -170,9 +185,25 @@ export const NoOption = styled.div`
   align-items: center;
   font-size: 20px;
   padding: 5px;
-  background-color: ${(props) =>
-    !props.recurringPayment && props.isSelected && props.theme.body};
+  /* background-color: ${(props) =>
+    !props.recurringPayment && props.isSelected && props.theme.body}; */
+  background-color: ${(props) => {
+    const newExpenseCond = !props.recurringPayment && props.isSelected;
+    const editExpenseCond = props.isEdit && !props.currentExpense.recurring;
+
+    if (props.recurringPayment === null) {
+      return;
+    } else if (!props.recurringPayment) {
+      return props.theme.body;
+    }
+  }};
   cursor: pointer;
+`;
+
+export const Footer = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
 `;
 
 export const SubmitButton = styled.div`
@@ -180,7 +211,26 @@ export const SubmitButton = styled.div`
   padding: 5px 30px;
   border-radius: 5px;
   font-size: 20px;
-  align-self: flex-end;
   cursor: pointer;
   margin-top: auto;
 `;
+
+const onStart = keyframes`
+{
+  0% {
+      opacity: 0;
+      transform: translateY(15px);
+  }
+100% {
+    transform: translateY(0);
+    opacity: 1;
+}
+}`;
+
+export const ErrorMsg = styled.div`
+  font-size: 16px;
+  align-self: center;
+  margin-right: 10px;
+  color: ${(props) => props.theme. mutedColor};
+  animation: ${onStart} .5s 1 ease forwards;
+`

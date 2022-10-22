@@ -49,7 +49,7 @@ export default {
     ) {
       // check for duplicate entries
       const expenseName = await Expense.findOne({ name });
-      if (expenseName) {
+      if (expenseName && expenseName.id !== expenseId) {
         throw new UserInputError("Expense with that name already exists", {
           errors: { title: "Expense already exists" },
         });
