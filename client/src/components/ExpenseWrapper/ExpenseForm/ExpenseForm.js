@@ -1,10 +1,15 @@
-import React, { useState } from "react";
+import { useMutation, useQuery } from "@apollo/client";
+import React, { useState, useEffect } from "react";
 import { BsPlusSquare, BsXSquare } from "react-icons/bs";
 import Select from "react-select";
+import {
+  GET_EXPENSES,
+  ADD_EXPENSE,
+  UPDATE_EXPENSE,
+} from "../../../graphql/graphql";
 
 import {
   Container,
-  DueDate,
   FormContainer,
   FormHeader,
   NoOption,
@@ -13,17 +18,42 @@ import {
   YesOption,
   customSelectStyles,
   AmountWrapper,
-  DollarIcon,
+  Footer,
+  ErrorMsg,
 } from "./styles";
 
-const ExpenseForm = ({ openExpenseForm, setOpenExpenseForm }) => {
-  const [recurringPayment, setRecurringPayment] = useState(false);
-  const [isSelected, setIsSelected] = useState(false);
-  const [expenseName, setExpenseName] = useState("");
-  const [dateChosen, setDateChosen] = useState("");
-  const [expenseAmount, setExpenseAmount] = useState("");
+const ExpenseForm = ({
+  openExpenseForm,
+  setOpenExpenseForm,
+  isEdit,
+  currentExpense,
+  setIsEdit,
+  isSelected,
+  setIsSelected,
+  expenseName,
+  setExpenseName,
+  recurringPayment,
+  setRecurringPayment,
+  dateChosen,
+  setDateChosen,
+  expenseAmount,
+  setExpenseAmount,
+  errorMessage,
+  setErrorMessage
+}) => {
 
-  const options = [];
+  const [addExpense] = useMutation(
+    ADD_EXPENSE,
+    {
+      refetchQueries: [{ query: GET_EXPENSES }, "getExpenses"],
+    }
+  );
+
+  const [updateExpense] = useMutation(UPDATE_EXPENSE, {
+    refetchQueries: [{ query: GET_EXPENSES }, "getExpenses"],
+  });
+
+  const options = ["n/a"];
 
   for (let i = 1; i <= 31; i++) {
     options.push(i);
@@ -67,17 +97,62 @@ const ExpenseForm = ({ openExpenseForm, setOpenExpenseForm }) => {
   // });
 
   const handleDateChange = (date) => {
-    setDateChosen(date);
+    setDateChosen(date.value.toString());
   };
-
-  console.log(recurringPayment);
 
   const closeAndClearForm = () => {
     setOpenExpenseForm(false);
-    setExpenseName('');
-    setDateChosen('');
-    setExpenseAmount('');
-  }
+    setExpenseName("");
+    setDateChosen("");
+    setExpenseAmount("");
+    setRecurringPayment(null);
+    setIsSelected(false);
+    setIsEdit(false);
+    setErrorMessage(false);
+  };
+
+  const validateExpense = () => {
+    if (expenseName.trim() === "" || expenseAmount === "") {
+      setErrorMessage(true);
+      return false;
+    }
+    return true;
+  };
+
+  const onSubmit = () => {
+    if (validateExpense()) {
+      setErrorMessage(false);
+      if (isEdit) {
+        updateExpense({
+          variables: {
+            expenseId: currentExpense.id,
+            name: expenseName,
+            dueDate: dateChosen,
+            recurring: recurringPayment,
+            amount: expenseAmount,
+          },
+        });
+      } else {
+        addExpense({
+          variables: {
+            name: expenseName,
+            dueDate: dateChosen,
+            recurring: recurringPayment,
+            amount: expenseAmount,
+          },
+        });
+      }
+      closeAndClearForm();
+    }
+  };
+
+  const renderErrorMessage = () => {
+    return (
+      <ErrorMsg>
+        <p>Please enter an expense name and amount</p>
+      </ErrorMsg>
+    );
+  };
 
   return (
     <>
@@ -88,15 +163,26 @@ const ExpenseForm = ({ openExpenseForm, setOpenExpenseForm }) => {
         {openExpenseForm && (
           <FormContainer>
             <FormHeader>
-              <h3>Add New Expense</h3>
+              {isEdit ? (
+                <>
+                  <h3>Edit Expense</h3>
+                  <p>{currentExpense.name}</p>
+                </>
+              ) : (
+                <h3>Add New Expense</h3>
+              )}
               <BsXSquare onClick={closeAndClearForm} />
             </FormHeader>
-
+            {/* 
+---------------HERE
+*/}
             <label>Name</label>
             <input
               type="text"
               name="name"
-              placeholder="Expense name..."
+              key={isEdit ? currentExpense.name : 1}
+              // placeholder="Expense name..."
+              // defaultValue={isEdit ? currentExpense.name : expenseName}
               value={expenseName}
               onChange={(e) => setExpenseName(e.target.value)}
             />
@@ -107,9 +193,17 @@ const ExpenseForm = ({ openExpenseForm, setOpenExpenseForm }) => {
               options={dueDateOptions}
               styles={customSelectStyles}
               maxMenuHeight={200}
-              placeholder="Select date..."
-              isClearable={true}
-              value={dateChosen}
+              // placeholder={!isEdit && 'Select date...'}
+
+              // value={dateChosen}
+              key={isEdit && currentExpense.dueDate}
+              // defaultValue={
+              //   isEdit && {
+              //     label: currentExpense.dueDate,
+              //     value: currentExpense.dueDate,
+              //   }
+              // }
+              value={{ label: dateChosen, value: dateChosen }}
               onChange={handleDateChange}
             />
 
@@ -121,8 +215,10 @@ const ExpenseForm = ({ openExpenseForm, setOpenExpenseForm }) => {
                 name="amount"
                 step="0.01"
                 min="0.01"
-                placeholder="Expense total..."
+                // placeholder="Expense total..."
                 onKeyPress={preventNegative}
+                key={isEdit && currentExpense.amount}
+                // defaultValue={isEdit ? currentExpense.amount : expenseAmount}
                 value={expenseAmount}
                 onChange={(e) => setExpenseAmount(e.target.value)}
                 onInput={(e) => naturalRound(e)}
@@ -131,6 +227,8 @@ const ExpenseForm = ({ openExpenseForm, setOpenExpenseForm }) => {
             <label>Recurring Payment?</label>
             <RecurBox>
               <NoOption
+                currentExpense={currentExpense && currentExpense}
+                isEdit={isEdit}
                 recurringPayment={recurringPayment}
                 isSelected={isSelected}
                 onClick={() => [
@@ -141,6 +239,8 @@ const ExpenseForm = ({ openExpenseForm, setOpenExpenseForm }) => {
                 <p>No</p>
               </NoOption>
               <YesOption
+                currentExpense={currentExpense && currentExpense}
+                isEdit={isEdit}
                 recurringPayment={recurringPayment}
                 isSelected={isSelected}
                 onClick={() => [setRecurringPayment(true), setIsSelected(true)]}
@@ -148,9 +248,12 @@ const ExpenseForm = ({ openExpenseForm, setOpenExpenseForm }) => {
                 <p>Yes</p>
               </YesOption>
             </RecurBox>
-            <SubmitButton>
-              <p>Submit</p>
-            </SubmitButton>
+            <Footer>
+              {errorMessage && renderErrorMessage()}
+              <SubmitButton onClick={onSubmit}>
+                <p>Submit</p>
+              </SubmitButton>
+            </Footer>
           </FormContainer>
         )}
       </Container>

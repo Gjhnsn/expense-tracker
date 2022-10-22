@@ -2,11 +2,13 @@
 
 import styled from "styled-components";
 import { SlRefresh } from 'react-icons/sl'
+import { AiOutlineMinus } from "react-icons/ai";
+
 
 
 export const Container = styled.div`
   background-color: ${(props) => props.theme.secondaryColor};
-  border-radius: 10px 10px 0 0;
+  border-radius: 10px;
   padding: 25px;
   width: 48%;
   height: 100%;
@@ -28,6 +30,7 @@ export const Header = styled.div`
   grid-template-columns: 2fr 1fr 1fr 0.5fr;
   margin-bottom: 5px;
   color: ${(props) => props.theme.mutedColor};
+  border-bottom: 1px solid ${(props) => props.theme.body};
 
   & :last-child {
     margin-left: auto;
@@ -52,15 +55,17 @@ export const GridLayout = styled.div`
   & :last-child {
     margin-left: auto;
   } 
-
-  & p :last-child {
-    margin-left: 10px;
-  }
 `; 
 
 export const RecurIcon = styled(SlRefresh)`
   color: ${(props) => props.theme.mutedColor};
   font-size: 12px;
+`
+
+export const NoDateIcon = styled(AiOutlineMinus)`
+    color: ${(props) => props.theme.mutedColor};
+    font-size: 16px;
+
 `
 
 export const Footer = styled.div`
@@ -70,5 +75,5 @@ export const Footer = styled.div`
   color: ${(props) => props.theme.mutedColor};
   margin-top: auto;
   padding: 25px 10px 0 0;
-  border-top: 1px solid black;
+  border-top: 1px solid ${(props) => props.theme.body};
 `;
