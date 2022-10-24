@@ -20,7 +20,7 @@ const ExpenseList = ({
   setRecurringPayment,
   setDateChosen,
   setExpenseAmount,
-  setErrorMessage
+  setErrorMessage,
 }) => {
   const { loading, data, refetch } = useQuery(GET_EXPENSES);
 
@@ -55,9 +55,8 @@ const ExpenseList = ({
     setExpenseName(expense.name);
     setDateChosen(expense.dueDate);
     setExpenseAmount(expense.amount);
-    setRecurringPayment(expense.recurring)
+    setRecurringPayment(expense.recurring);
   };
-
 
   const expenses = [...data?.getExpenses]
     .sort((a, b) => a.dueDate - b.dueDate)
@@ -76,7 +75,7 @@ const ExpenseList = ({
                 <NoDateIcon />
               )}
             </p>
-            <p>${expense.amount}</p>
+            <p>${Number(expense.amount).toFixed(2)}</p>
             <p>
               <AiOutlineEdit
                 onClick={() => onEdit(expense)}
@@ -94,6 +93,22 @@ const ExpenseList = ({
       );
     });
 
+// ------ convert expense amount to numbers and add total of array
+  const totalOfExpenses = () => {
+    if (data.getExpenses.length > 0) {
+      const expenseAmountList = data?.getExpenses.map(
+        (expense) => expense.amount
+      );
+      const convertedAmountList = expenseAmountList?.map((price) =>
+        Number(price)
+      );
+      const expenseTotal = convertedAmountList?.reduce((accumulator, value) => {
+        return accumulator + value;
+      });
+      return expenseTotal.toFixed(2);
+    }
+  };
+
   return (
     <Container>
       <Header>
@@ -106,7 +121,7 @@ const ExpenseList = ({
         <ul>{expenses}</ul>
       </ScrollContainer>
       <Footer>
-        <p>Total: $2,330</p>
+        {data?.getExpenses.length > 0 ? <p>Total: ${totalOfExpenses()}</p> : <p>$0.00</p>}
       </Footer>
     </Container>
   );
