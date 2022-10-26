@@ -55,9 +55,9 @@ export const DueDate = styled.div.attrs({
 
 export const customSelectStyles = {
   option: (provided, state) => ({
-    backgroundColor: state.isSelected ? `#252525` : `#343434`,
+    backgroundColor: `#343434`,
     borderBottom: "1px solid #959595",
-    color: `${(props) => props.theme.body}`,
+    color: `#D9D9D9`,
     padding: 10,
     fontSize: `12px`,
     "&:hover": {
@@ -162,12 +162,7 @@ export const YesOption = styled.div`
   align-items: center;
   font-size: 20px;
   padding: 5px;
-  /* background-color: ${(props) =>
-    props.recurringPayment && props.isSelected && props.theme.body}; */
   background-color: ${(props) => {
-    const newExpenseCond = props.recurringPayment && props.isSelected;
-    const editExpenseCond = props.isEdit && props.currentExpense.recurring;
-
     if (props.recurringPayment === null) {
       return;
     } else if (props.recurringPayment) {
@@ -185,12 +180,7 @@ export const NoOption = styled.div`
   align-items: center;
   font-size: 20px;
   padding: 5px;
-  /* background-color: ${(props) =>
-    !props.recurringPayment && props.isSelected && props.theme.body}; */
   background-color: ${(props) => {
-    const newExpenseCond = !props.recurringPayment && props.isSelected;
-    const editExpenseCond = props.isEdit && !props.currentExpense.recurring;
-
     if (props.recurringPayment === null) {
       return;
     } else if (!props.recurringPayment) {
@@ -231,6 +221,6 @@ export const ErrorMsg = styled.div`
   font-size: 16px;
   align-self: center;
   margin-right: 10px;
-  color: ${(props) => props.theme. mutedColor};
-  animation: ${onStart} .5s 1 ease forwards;
-`
+  color: ${(props) => props.theme.mutedColor};
+  animation: ${onStart} 0.5s 1 ease forwards;
+`;

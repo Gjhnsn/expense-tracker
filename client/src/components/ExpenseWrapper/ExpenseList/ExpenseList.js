@@ -1,8 +1,9 @@
-import { useQuery, useMutation } from "@apollo/client";
-import React from "react";
-import { DELETE_EXPENSE, GET_EXPENSES } from "../../../graphql/graphql";
+import { useQuery } from "@apollo/client";
+import React, { useState } from "react";
+import { GET_EXPENSES } from "../../../graphql/graphql";
 import {
   Container,
+  DeleteIcon,
   Footer,
   GridLayout,
   Header,
@@ -10,7 +11,8 @@ import {
   RecurIcon,
   ScrollContainer,
 } from "./styles";
-import { AiOutlineEdit, AiOutlineDelete } from "react-icons/ai";
+import { AiOutlineEdit } from "react-icons/ai";
+import DeleteModal from "../../DeleteModal/DeleteModal";
 
 const ExpenseList = ({
   setIsEdit,
@@ -21,25 +23,11 @@ const ExpenseList = ({
   setDateChosen,
   setExpenseAmount,
   setErrorMessage,
+  currentExpense,
 }) => {
-  const { loading, data, refetch } = useQuery(GET_EXPENSES);
+  const [deleteModal, setDeleteModal] = useState(false);
 
-  const [deleteExpense] = useMutation(DELETE_EXPENSE, {
-    refetchQueries: [{ query: GET_EXPENSES }, "getExpenses"],
-    update(cache, result) {
-      const data = cache.readQuery({
-        query: GET_EXPENSES,
-      });
-      const cachedExpenses = [...data.getExpenses];
-      cachedExpenses.map(
-        (obj) => result.data.deleteExpense.id === obj.id || obj
-      );
-      cache.writeQuery({
-        query: GET_EXPENSES,
-        data: { getExpenses: cachedExpenses },
-      });
-    },
-  });
+  const { loading, data, refetch } = useQuery(GET_EXPENSES);
 
   // replace with spinner
   if (loading) return <p>Loading...</p>;
@@ -58,21 +46,31 @@ const ExpenseList = ({
     setRecurringPayment(expense.recurring);
   };
 
+  const handleOpenDeleteModal = (expense) => {
+    setDeleteModal((prev) => !prev);
+    setCurrentExpense(expense);
+    setOpenExpenseForm(false);
+  };
+
   const expenses = [...data?.getExpenses]
-    .sort((a, b) => a.dueDate - b.dueDate)
+    .sort((a, b) => (a.dueDate === "n/a" ? -1 : a.dueDate - b.dueDate))
     .map((expense) => {
       return (
         <li order={expense.amount} key={expense.name}>
-          <GridLayout>
+          <GridLayout
+            currentExpense={currentExpense}
+            expense={expense}
+            deleteModal={deleteModal}
+          >
             <div>
               <p>{expense.name}</p>
               {expense.recurring === true && <RecurIcon />}
             </div>
             <p>
-              {expense.dueDate !== "n/a" ? (
-                currMonth + "/" + expense.dueDate
-              ) : (
+              {expense.dueDate.length < 1 || expense.dueDate.length > 2 ? (
                 <NoDateIcon />
+              ) : (
+                currMonth + "/" + expense.dueDate
               )}
             </p>
             <p>${Number(expense.amount).toFixed(2)}</p>
@@ -81,19 +79,24 @@ const ExpenseList = ({
                 onClick={() => onEdit(expense)}
                 style={{ cursor: "pointer" }}
               />{" "}
-              <AiOutlineDelete
-                onClick={() =>
-                  deleteExpense({ variables: { expenseId: expense.id } })
-                }
-                style={{ cursor: "pointer", marginLeft: "10px" }}
+              <DeleteIcon
+                onClick={() => handleOpenDeleteModal(expense)}
+                style={{ marginLeft: "10px" }}
               />
             </p>
           </GridLayout>
+          <DeleteModal
+            setOpenExpenseForm={setOpenExpenseForm}
+            currentExpense={currentExpense}
+            expense={expense}
+            deleteModal={deleteModal}
+            setDeleteModal={setDeleteModal}
+          />
         </li>
       );
     });
 
-// ------ convert expense amount to numbers and add total of array
+  // ------ convert expense amount to numbers and add total of array
   const totalOfExpenses = () => {
     if (data.getExpenses.length > 0) {
       const expenseAmountList = data?.getExpenses.map(
@@ -121,7 +124,11 @@ const ExpenseList = ({
         <ul>{expenses}</ul>
       </ScrollContainer>
       <Footer>
-        {data?.getExpenses.length > 0 ? <p>Total: ${totalOfExpenses()}</p> : <p>$0.00</p>}
+        {data?.getExpenses.length > 0 ? (
+          <p>Total: ${totalOfExpenses()}</p>
+        ) : (
+          <p>$0.00</p>
+        )}
       </Footer>
     </Container>
   );

@@ -28,8 +28,6 @@ const ExpenseForm = ({
   isEdit,
   currentExpense,
   setIsEdit,
-  isSelected,
-  setIsSelected,
   expenseName,
   setExpenseName,
   recurringPayment,
@@ -39,15 +37,11 @@ const ExpenseForm = ({
   expenseAmount,
   setExpenseAmount,
   errorMessage,
-  setErrorMessage
+  setErrorMessage,
 }) => {
-
-  const [addExpense] = useMutation(
-    ADD_EXPENSE,
-    {
-      refetchQueries: [{ query: GET_EXPENSES }, "getExpenses"],
-    }
-  );
+  const [addExpense] = useMutation(ADD_EXPENSE, {
+    refetchQueries: [{ query: GET_EXPENSES }, "getExpenses"],
+  });
 
   const [updateExpense] = useMutation(UPDATE_EXPENSE, {
     refetchQueries: [{ query: GET_EXPENSES }, "getExpenses"],
@@ -55,7 +49,14 @@ const ExpenseForm = ({
 
   const options = ["n/a"];
 
-  for (let i = 1; i <= 31; i++) {
+  const daysInMonth = () => {
+    let now = new Date();
+    return new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
+  };
+
+  console.log(daysInMonth());
+
+  for (let i = 1; i <= daysInMonth(); i++) {
     options.push(i);
   }
 
@@ -106,7 +107,6 @@ const ExpenseForm = ({
     setDateChosen("");
     setExpenseAmount("");
     setRecurringPayment(null);
-    setIsSelected(false);
     setIsEdit(false);
     setErrorMessage(false);
   };
@@ -230,11 +230,7 @@ const ExpenseForm = ({
                 currentExpense={currentExpense && currentExpense}
                 isEdit={isEdit}
                 recurringPayment={recurringPayment}
-                isSelected={isSelected}
-                onClick={() => [
-                  setRecurringPayment(false),
-                  setIsSelected(true),
-                ]}
+                onClick={() => setRecurringPayment(false)}
               >
                 <p>No</p>
               </NoOption>
@@ -242,8 +238,7 @@ const ExpenseForm = ({
                 currentExpense={currentExpense && currentExpense}
                 isEdit={isEdit}
                 recurringPayment={recurringPayment}
-                isSelected={isSelected}
-                onClick={() => [setRecurringPayment(true), setIsSelected(true)]}
+                onClick={() => setRecurringPayment(true)}
               >
                 <p>Yes</p>
               </YesOption>

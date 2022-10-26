@@ -8,7 +8,6 @@ import { HeightContainer, Wrapper } from "./styles";
 const ExpenseWrapper = () => {
   const { loading, data } = useQuery(GET_EXPENSES);
   const [currentExpense, setCurrentExpense] = useState(null);
-  const [isSelected, setIsSelected] = useState(false);
   const [expenseName, setExpenseName] = useState("");
   const [dateChosen, setDateChosen] = useState("");
   const [expenseAmount, setExpenseAmount] = useState("");
@@ -24,14 +23,13 @@ const ExpenseWrapper = () => {
         <ExpenseList
           setIsEdit={setIsEdit}
           setOpenExpenseForm={setOpenExpenseForm}
-          expenses={data}
           setCurrentExpense={setCurrentExpense}
-          setIsSelected={setIsSelected}
           setExpenseName={setExpenseName}
           setRecurringPayment={setRecurringPayment}
           setDateChosen={setDateChosen}
           setExpenseAmount={setExpenseAmount}
           setErrorMessage={setErrorMessage}
+          currentExpense={currentExpense}
         />
         <ExpenseForm
           errorMessage={errorMessage}
@@ -48,11 +46,7 @@ const ExpenseWrapper = () => {
           isEdit={isEdit}
           openExpenseForm={openExpenseForm}
           setOpenExpenseForm={setOpenExpenseForm}
-          setCurrentExpense={setCurrentExpense}
           currentExpense={currentExpense}
-          expenses={data}
-          isSelected={isSelected}
-          setIsSelected={setIsSelected}
         />
       </HeightContainer>
     </Wrapper>
