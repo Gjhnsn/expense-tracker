@@ -2,16 +2,21 @@ import { useQuery } from "@apollo/client";
 import React, { useState } from "react";
 import { GET_EXPENSES } from "../../../graphql/graphql";
 import {
+  ActionIconBar,
+  AmountP,
   Container,
   DeleteIcon,
+  EditIcon,
   Footer,
   GridLayout,
   Header,
+  Name,
+  NameWarpper,
+  NameWrapper,
   NoDateIcon,
   RecurIcon,
   ScrollContainer,
 } from "./styles";
-import { AiOutlineEdit } from "react-icons/ai";
 import DeleteModal from "../../DeleteModal/DeleteModal";
 
 const ExpenseList = ({
@@ -24,8 +29,9 @@ const ExpenseList = ({
   setExpenseAmount,
   setErrorMessage,
   currentExpense,
+  setDeleteModal,
+  deleteModal,
 }) => {
-  const [deleteModal, setDeleteModal] = useState(false);
 
   const { loading, data, refetch } = useQuery(GET_EXPENSES);
 
@@ -62,10 +68,10 @@ const ExpenseList = ({
             expense={expense}
             deleteModal={deleteModal}
           >
-            <div>
-              <p>{expense.name}</p>
+            <NameWrapper>
+              <Name>{expense.name}</Name>
               {expense.recurring === true && <RecurIcon />}
-            </div>
+            </NameWrapper>
             <p>
               {expense.dueDate.length < 1 || expense.dueDate.length > 2 ? (
                 <NoDateIcon />
@@ -73,17 +79,11 @@ const ExpenseList = ({
                 currMonth + "/" + expense.dueDate
               )}
             </p>
-            <p>${Number(expense.amount).toFixed(2)}</p>
-            <p>
-              <AiOutlineEdit
-                onClick={() => onEdit(expense)}
-                style={{ cursor: "pointer" }}
-              />{" "}
-              <DeleteIcon
-                onClick={() => handleOpenDeleteModal(expense)}
-                style={{ marginLeft: "10px" }}
-              />
-            </p>
+            <AmountP>${Number(expense.amount).toFixed(2)}</AmountP>
+            <ActionIconBar>
+              <EditIcon onClick={() => onEdit(expense)} />
+              <DeleteIcon onClick={() => handleOpenDeleteModal(expense)} />
+            </ActionIconBar>
           </GridLayout>
           <DeleteModal
             setOpenExpenseForm={setOpenExpenseForm}
@@ -108,29 +108,31 @@ const ExpenseList = ({
       const expenseTotal = convertedAmountList?.reduce((accumulator, value) => {
         return accumulator + value;
       });
-      return expenseTotal.toFixed(2);
+      return expenseTotal.toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2});
     }
   };
 
   return (
-    <Container>
-      <Header>
-        <h3>Name</h3>
-        <h3>Due</h3>
-        <h3>Amount</h3>
-        <h3>Action</h3>
-      </Header>
-      <ScrollContainer>
-        <ul>{expenses}</ul>
-      </ScrollContainer>
-      <Footer>
-        {data?.getExpenses.length > 0 ? (
-          <p>Total: ${totalOfExpenses()}</p>
-        ) : (
-          <p>$0.00</p>
-        )}
-      </Footer>
-    </Container>
+    <>
+      <Container>
+        <Header>
+          <h3>Name</h3>
+          <h3>Due</h3>
+          <h3>Amount</h3>
+          {window.innerWidth > "450" ? <h3>Action</h3> : <p></p>}
+        </Header>
+        <ScrollContainer>
+          <ul>{expenses}</ul>
+        </ScrollContainer>
+        <Footer>
+          {data?.getExpenses.length > 0 ? (
+            <p>Total: ${totalOfExpenses()}</p>
+          ) : (
+            <p>$0.00</p>
+          )}
+        </Footer>
+      </Container>
+    </>
   );
 };
 

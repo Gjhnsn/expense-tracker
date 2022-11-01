@@ -20,6 +20,8 @@ import {
   AmountWrapper,
   Footer,
   ErrorMsg,
+  CurrName,
+  CloseButton,
 } from "./styles";
 
 const ExpenseForm = ({
@@ -38,6 +40,7 @@ const ExpenseForm = ({
   setExpenseAmount,
   errorMessage,
   setErrorMessage,
+  setDeleteModal
 }) => {
   const [addExpense] = useMutation(ADD_EXPENSE, {
     refetchQueries: [{ query: GET_EXPENSES }, "getExpenses"],
@@ -72,14 +75,6 @@ const ExpenseForm = ({
     }
   };
 
-  // option for 2 decimals
-  // function limitDecimalPlaces(e, count) {
-  //   if (e.target.value.indexOf('.') == -1) { return; }
-  //   if ((e.target.value.length - e.target.value.indexOf('.')) > count) {
-  //     e.target.value = parseFloat(e.target.value).toFixed(count);
-  //   }
-  // }
-
   function naturalRound(e) {
     let dec = e.target.value.indexOf(".");
     let tooLong = e.target.value.length > dec + 3;
@@ -89,13 +84,6 @@ const ExpenseForm = ({
       e.target.value = e.target.value.slice(0, -1);
     }
   }
-
-  // prevent scroll for number increase
-  //   document.addEventListener("wheel", function(event){
-  //     if(document.activeElement.type === "number"){
-  //         document.activeElement.blur();
-  //     }
-  // });
 
   const handleDateChange = (date) => {
     setDateChosen(date.value.toString());
@@ -158,7 +146,7 @@ const ExpenseForm = ({
     <>
       <Container openExpenseForm={openExpenseForm}>
         {!openExpenseForm && (
-          <BsPlusSquare onClick={() => setOpenExpenseForm(true)} />
+          <BsPlusSquare style={{cursor: 'pointer'}} onClick={() => [setOpenExpenseForm(true), setDeleteModal(false)]} />
         )}
         {openExpenseForm && (
           <FormContainer>
@@ -166,23 +154,21 @@ const ExpenseForm = ({
               {isEdit ? (
                 <>
                   <h3>Edit Expense</h3>
-                  <p>{currentExpense.name}</p>
+                  <CurrName>{currentExpense.name}</CurrName>
                 </>
               ) : (
                 <h3>Add New Expense</h3>
               )}
-              <BsXSquare onClick={closeAndClearForm} />
+              <CloseButton onClick={closeAndClearForm} />
             </FormHeader>
             {/* 
 ---------------HERE
 */}
-            <label>Name</label>
+            <label htmlFor="name">Name</label>
             <input
               type="text"
               name="name"
               key={isEdit ? currentExpense.name : 1}
-              // placeholder="Expense name..."
-              // defaultValue={isEdit ? currentExpense.name : expenseName}
               value={expenseName}
               onChange={(e) => setExpenseName(e.target.value)}
             />
@@ -193,16 +179,7 @@ const ExpenseForm = ({
               options={dueDateOptions}
               styles={customSelectStyles}
               maxMenuHeight={200}
-              // placeholder={!isEdit && 'Select date...'}
-
-              // value={dateChosen}
               key={isEdit && currentExpense.dueDate}
-              // defaultValue={
-              //   isEdit && {
-              //     label: currentExpense.dueDate,
-              //     value: currentExpense.dueDate,
-              //   }
-              // }
               value={{ label: dateChosen, value: dateChosen }}
               onChange={handleDateChange}
             />
@@ -215,10 +192,8 @@ const ExpenseForm = ({
                 name="amount"
                 step="0.01"
                 min="0.01"
-                // placeholder="Expense total..."
                 onKeyPress={preventNegative}
                 key={isEdit && currentExpense.amount}
-                // defaultValue={isEdit ? currentExpense.amount : expenseAmount}
                 value={expenseAmount}
                 onChange={(e) => setExpenseAmount(e.target.value)}
                 onInput={(e) => naturalRound(e)}

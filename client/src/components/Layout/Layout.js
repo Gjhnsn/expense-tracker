@@ -1,17 +1,21 @@
-import React from "react";
+import React, { useState } from "react";
+import { Backdrop } from "../DeleteModal/styles";
 import ExpenseWrapper from "../ExpenseWrapper/ExpenseWrapper";
 import Header from "../Header/Header";
 import Month from "../Month/Month";
-import { Text, Wrapper } from "./styles";
+import { Content, Wrapper } from "./styles";
 
 const Layout = () => {
+    const [deleteModal, setDeleteModal] = useState(false);
+
   return (
     <Wrapper>
-      <div>
-        <Header />
+      {deleteModal && window.innerWidth < "1024" && <Backdrop />}
+      <Header />
+      <Content>
         <Month />
-      </div>
-      <ExpenseWrapper />
+        <ExpenseWrapper deleteModal={deleteModal} setDeleteModal={setDeleteModal}/>
+      </Content>
     </Wrapper>
   );
 };
