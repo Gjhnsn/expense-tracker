@@ -1,5 +1,5 @@
 import React from "react";
-import { useQuery, useMutation } from "@apollo/client";
+import { useMutation } from "@apollo/client";
 
 import { AnimatePresence } from "framer-motion";
 import { ConfirmBar, DeleteDialoge } from "./styles";

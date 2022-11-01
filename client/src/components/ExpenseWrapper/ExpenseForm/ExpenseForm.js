@@ -1,6 +1,6 @@
-import { useMutation, useQuery } from "@apollo/client";
-import React, { useState, useEffect } from "react";
-import { BsPlusSquare, BsXSquare } from "react-icons/bs";
+import { useMutation } from "@apollo/client";
+import React from "react";
+import { BsPlusSquare } from "react-icons/bs";
 import Select from "react-select";
 import {
   GET_EXPENSES,

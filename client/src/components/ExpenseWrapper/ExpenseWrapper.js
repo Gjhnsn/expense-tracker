@@ -1,12 +1,9 @@
 import React, { useState } from "react";
-import { useQuery } from "@apollo/client";
-import { GET_EXPENSES } from "../../graphql/graphql";
 import ExpenseForm from "./ExpenseForm/ExpenseForm";
 import ExpenseList from "./ExpenseList/ExpenseList";
 import { HeightContainer, Wrapper } from "./styles";
 
 const ExpenseWrapper = ({setDeleteModal, deleteModal}) => {
-  const { loading, data } = useQuery(GET_EXPENSES);
   const [currentExpense, setCurrentExpense] = useState(null);
   const [expenseName, setExpenseName] = useState("");
   const [dateChosen, setDateChosen] = useState("");
