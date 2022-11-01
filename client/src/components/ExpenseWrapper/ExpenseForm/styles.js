@@ -107,7 +107,7 @@ export const customSelectStyles = {
     padding: 10,
     fontSize: `12px`,
     "&:hover": {
-      backgroundColor: "#5B7861",
+      backgroundColor: `#262626`,
     },
   }),
   dropdownIndicator: (provided) => ({

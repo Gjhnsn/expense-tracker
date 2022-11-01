@@ -1,6 +1,6 @@
 //expense list styles
 
-import styled, { keyframes } from "styled-components";
+import styled from "styled-components";
 import { SlRefresh } from "react-icons/sl";
 import { AiOutlineMinus, AiOutlineDelete, AiOutlineEdit } from "react-icons/ai";
 import { motion } from "framer-motion";
@@ -103,6 +103,10 @@ export const RecurIcon = styled(SlRefresh)`
   font-size: 12px;
   margin-left: 5px;
   margin-right: 5px;
+
+  &:focus {
+    outline: none;
+  }
 `;
 
 export const NoDateIcon = styled(AiOutlineMinus)`
@@ -155,7 +159,8 @@ export const DeleteIcon = styled(AiOutlineDelete)`
 export const EditIcon = styled(AiOutlineEdit)`
   cursor: pointer;
   &:hover {
-    color: #5B7861;
+    color: ${(props) => props.theme.mutedColor};
+    transition: color 0.2s ease;
   }
 `
 

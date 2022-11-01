@@ -1,5 +1,5 @@
 import { useQuery } from "@apollo/client";
-import React, { useState } from "react";
+import React from "react";
 import { GET_EXPENSES } from "../../../graphql/graphql";
 import {
   ActionIconBar,
@@ -11,13 +11,14 @@ import {
   GridLayout,
   Header,
   Name,
-  NameWarpper,
   NameWrapper,
   NoDateIcon,
   RecurIcon,
   ScrollContainer,
 } from "./styles";
 import DeleteModal from "../../DeleteModal/DeleteModal";
+import ReactTooltip from 'react-tooltip';
+
 
 const ExpenseList = ({
   setIsEdit,
@@ -33,7 +34,7 @@ const ExpenseList = ({
   deleteModal,
 }) => {
 
-  const { loading, data, refetch } = useQuery(GET_EXPENSES);
+  const { loading, data } = useQuery(GET_EXPENSES);
 
   // replace with spinner
   if (loading) return <p>Loading...</p>;
@@ -70,7 +71,7 @@ const ExpenseList = ({
           >
             <NameWrapper>
               <Name>{expense.name}</Name>
-              {expense.recurring === true && <RecurIcon />}
+              {expense.recurring === true && <><RecurIcon data-tip="Expense Is Recurring" /><ReactTooltip backgroundColor="rgba(52, 52, 52, .8)" clickable={false} disable={window.innerWidth < "450" && true}/></>}
             </NameWrapper>
             <p>
               {expense.dueDate.length < 1 || expense.dueDate.length > 2 ? (
