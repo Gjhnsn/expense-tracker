@@ -2,8 +2,9 @@
 
 import styled, { keyframes } from "styled-components";
 import { SlRefresh } from "react-icons/sl";
-import { AiOutlineMinus, AiOutlineDelete } from "react-icons/ai";
+import { AiOutlineMinus, AiOutlineDelete, AiOutlineEdit } from "react-icons/ai";
 import { motion } from "framer-motion";
+import { uiSize } from "../../../utils/mobileScreens";
 
 export const Container = styled.div`
   background-color: ${(props) => props.theme.secondaryColor};
@@ -14,6 +15,16 @@ export const Container = styled.div`
   position: relative;
   display: flex;
   flex-direction: column;
+
+  @media ${uiSize.tablet} {
+    width: 650px;
+    min-height: none;
+  }
+
+  @media ${uiSize.mobileLandscape} {
+    width: 100%;
+  }
+
 `;
 
 export const ScrollContainer = styled.div`
@@ -30,6 +41,10 @@ export const Header = styled.div`
   margin-bottom: 5px;
   color: ${(props) => props.theme.mutedColor};
   border-bottom: 1px solid ${(props) => props.theme.body};
+
+  @media ${uiSize.tablet} {
+    grid-template-columns: 1.5fr 1fr 1fr 0.5fr;
+  }
 
   & :last-child {
     margin-left: auto;
@@ -49,19 +64,45 @@ export const GridLayout = styled.div`
   margin-bottom: 5px;
   border-bottom: 1px solid #585858;
 
-  & div :first-child {
-    display: inline-block;
-    margin-right: 10px;
+  @media ${uiSize.tablet} {
+    align-items: center;
+    grid-template-columns: 1.5fr 1fr 1fr 0.5fr;
+    font-size: 16px;
   }
 
-  & :last-child {
-    margin-left: auto;
+`;
+
+export const NameWrapper = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+export const Name = styled.p`
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  @media ${uiSize.bigTablet} {
+    max-width: 140px;
+  }
+
+  @media ${uiSize.mobileLandscape} {
+    max-width: 100px;
+  }
+
+  @media ${uiSize.mobile} {
+    max-width: 90px;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 `;
 
 export const RecurIcon = styled(SlRefresh)`
   color: ${(props) => props.theme.mutedColor};
   font-size: 12px;
+  margin-left: 5px;
+  margin-right: 5px;
 `;
 
 export const NoDateIcon = styled(AiOutlineMinus)`
@@ -69,14 +110,54 @@ export const NoDateIcon = styled(AiOutlineMinus)`
   font-size: 16px;
 `;
 
+export const AmountP = styled.p`
+  max-width: 95px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  @media ${uiSize.mobile} {
+    max-width: 80px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+`;
+
+export const ActionIconBar = styled.div`
+  margin-right: 5px;
+  margin-left: auto;
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+
+  @media ${uiSize.tablet} {
+    margin-right: 0;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-end;
+  }
+`;
+
 export const DeleteIcon = styled(AiOutlineDelete)`
   cursor: pointer;
+  margin-left: 20px;
+
+  @media ${uiSize.tablet} {
+    margin-left: 0;
+    margin-top: 10px;
+  }
 
   &:hover {
     color: #ed5e68;
     transition: color 0.2s ease;
   }
 `;
+
+export const EditIcon = styled(AiOutlineEdit)`
+  cursor: pointer;
+  &:hover {
+    color: #5B7861;
+  }
+`
 
 export const Footer = styled.div`
   width: 100%;
@@ -87,18 +168,6 @@ export const Footer = styled.div`
   padding: 25px 10px 0 0;
   border-top: 1px solid ${(props) => props.theme.body};
 `;
-
-const showDelete = keyframes`
-{
-  0% {
-      opacity: 0;
-      transform: translateY(-75px);
-  }
-100% {
-    transform: translateY(0);
-    opacity: 1;
-}
-}`;
 
 export const DeleteDialoge = styled(motion.div)`
   position: absolute;
