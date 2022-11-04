@@ -43,6 +43,7 @@ export const FormHeader = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  
 
   @media ${uiSize.mobileLandscape} {
     flex-direction: column;
@@ -82,12 +83,12 @@ export const CloseButton = styled(BsXSquare)`
 
 export const CurrName = styled.p`
   white-space: nowrap;
-  max-width: 300px;
+  max-width: 270px;
   overflow: hidden;
   text-overflow: ellipsis;
 
   @media ${uiSize.bigTablet} {
-    max-width: 180px;
+    max-width: 151px;
   }
 `;
 

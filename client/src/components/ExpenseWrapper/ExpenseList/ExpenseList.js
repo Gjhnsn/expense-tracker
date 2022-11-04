@@ -117,10 +117,10 @@ const ExpenseList = ({
     <>
       <Container>
         <Header>
-          <h3>Name</h3>
-          <h3>Due</h3>
-          <h3>Amount</h3>
-          {window.innerWidth > "450" ? <h3>Action</h3> : <p></p>}
+          <p>Name</p>
+          <p>Due</p>
+          <p>Amount</p>
+          {window.innerWidth > "450" ? <p>Action</p> : <p></p>}
         </Header>
         <ScrollContainer>
           <ul>{expenses}</ul>
