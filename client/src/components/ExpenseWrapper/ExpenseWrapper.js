@@ -1,12 +1,9 @@
 import React, { useState } from "react";
-import { useQuery } from "@apollo/client";
-import { GET_EXPENSES } from "../../graphql/graphql";
 import ExpenseForm from "./ExpenseForm/ExpenseForm";
 import ExpenseList from "./ExpenseList/ExpenseList";
 import { HeightContainer, Wrapper } from "./styles";
 
-const ExpenseWrapper = () => {
-  const { loading, data } = useQuery(GET_EXPENSES);
+const ExpenseWrapper = ({setDeleteModal, deleteModal}) => {
   const [currentExpense, setCurrentExpense] = useState(null);
   const [expenseName, setExpenseName] = useState("");
   const [dateChosen, setDateChosen] = useState("");
@@ -30,8 +27,11 @@ const ExpenseWrapper = () => {
           setExpenseAmount={setExpenseAmount}
           setErrorMessage={setErrorMessage}
           currentExpense={currentExpense}
+          setDeleteModal={setDeleteModal}
+          deleteModal={deleteModal}
         />
         <ExpenseForm
+        setDeleteModal={setDeleteModal}
           errorMessage={errorMessage}
           setErrorMessage={setErrorMessage}
           expenseAmount={expenseAmount}

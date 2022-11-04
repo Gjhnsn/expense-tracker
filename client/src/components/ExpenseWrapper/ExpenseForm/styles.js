@@ -2,11 +2,13 @@
 
 import styled, { keyframes } from "styled-components";
 import { BiDollar } from "react-icons/bi";
+import { BsXSquare } from "react-icons/bs";
+import { uiSize } from "../../../utils/mobileScreens";
 
 export const Container = styled.div`
   background-color: ${(props) => props.theme.secondaryColor};
   border-radius: 10px;
-  padding: ${(props) => (props.openExpenseForm ? "25px" : "0 25px")};
+  padding: ${(props) => (props.openExpenseForm ? "25px" : "10px 25px")};
   width: 48%;
   color: white;
   font-size: 30px;
@@ -17,6 +19,16 @@ export const Container = styled.div`
   height: 60px;
   height: ${(props) => props.openExpenseForm && "100%"};
   transition: all 0.2s ease-in;
+
+  @media ${uiSize.tablet} {
+    margin-bottom: 20px;
+    width: 650px;
+  }
+
+  @media ${uiSize.mobileLandscape} {
+    width: 100%;
+  }
+
 `;
 
 export const FormContainer = styled.form`
@@ -31,9 +43,19 @@ export const FormHeader = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  
+
+  @media ${uiSize.mobileLandscape} {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 
   h3 {
     margin-right: 15px;
+
+    @media ${uiSize.mobileLandscape} {
+      font-size: 26px;
+    }
   }
 
   p {
@@ -42,6 +64,31 @@ export const FormHeader = styled.div`
     color: ${(props) => props.theme.mutedColor};
     font-size: 20px;
     padding-bottom: 3px;
+
+    @media ${uiSize.mobileLandscape} {
+      margin-top: 10px;
+    }
+  }
+`;
+
+export const CloseButton = styled(BsXSquare)`
+  cursor: pointer;
+
+  @media ${uiSize.mobileLandscape} {
+    position: absolute;
+    align-self: flex-end;
+    order: -1;
+  }
+`;
+
+export const CurrName = styled.p`
+  white-space: nowrap;
+  max-width: 270px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  @media ${uiSize.bigTablet} {
+    max-width: 151px;
   }
 `;
 
@@ -61,7 +108,7 @@ export const customSelectStyles = {
     padding: 10,
     fontSize: `12px`,
     "&:hover": {
-      backgroundColor: "#5B7861",
+      backgroundColor: `#262626`,
     },
   }),
   dropdownIndicator: (provided) => ({
@@ -89,8 +136,6 @@ export const customSelectStyles = {
   }),
 
   control: () => ({
-    // none of react-select's styles are passed to <Control />
-
     width: "100%",
     height: "33px",
     display: "flex",
@@ -194,6 +239,8 @@ export const Footer = styled.div`
   width: 100%;
   display: flex;
   justify-content: flex-end;
+  margin-top: auto;
+  position:relative;  
 `;
 
 export const SubmitButton = styled.div`
@@ -223,4 +270,23 @@ export const ErrorMsg = styled.div`
   margin-right: 10px;
   color: ${(props) => props.theme.mutedColor};
   animation: ${onStart} 0.5s 1 ease forwards;
+
+  @media ${uiSize.mobileLandscape} {
+    position: absolute;
+    margin-right: auto;
+      margin-left: auto;
+  }
+
+  p {
+    @media ${uiSize.mobileLandscape} {
+      font-size: 14px;
+      white-space: nowrap;
+      margin-bottom: 63px;
+      
+    }
+
+    @media ${uiSize.smallMobile} {
+      font-size: 10px;      
+    }
+  }
 `;
