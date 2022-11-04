@@ -44,6 +44,10 @@ export const GlobalStyles = createGlobalStyle`
         list-style: none;
     }
     
+    a {
+        text-decoration: none;
+        color: ${(props) => props.theme.headerText};
+    }
 `;
 
 export const theme = {
