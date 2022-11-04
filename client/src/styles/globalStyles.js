@@ -10,10 +10,13 @@ export const GlobalStyles = createGlobalStyle`
     h1 {
         color: #D9D9D9;
         font-size: 36px;
+        font-family: 'Sora', sans-serif;
+        font-weight: 300;
     }
 
     h3 {
         font-weight: 300;
+        font-family: 'Sora', sans-serif;
     }
 
     label {
